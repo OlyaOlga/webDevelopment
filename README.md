@@ -1,2 +1,2 @@
 # webDevelopment
-This is repository for my web projects!
+This is repository for my simple site!
