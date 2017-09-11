@@ -44,8 +44,12 @@ body
 {
 	background-color:linen;
 }
-
-#first_photo_main
+div.thomas_photos {
+    padding: 15px;
+    text-align: center;
+}
+footer
 {
-	float:left;
+	text-align:center;
+	background-color:yellow;
 }
