@@ -9,11 +9,15 @@ header
 	font-size:70px;
 }
 
-li a {
+li a 
+{
     display: block;
     color: black;
+	background-color:red;
     padding: 20px 20px;
     text-decoration: none;
+	width: 150px;
+	float: left;
 }
 
 li a:hover
@@ -21,14 +25,27 @@ li a:hover
 	background-color:yellow;
 	text-decoration: underline;
 }
-ul.myMenu {
+ul.myMenu 
+{
     list-style-type: none;
     margin: 0;
     padding: 0;
     width: 150px;
     background-color: red;
 }
+
+h1.pageHeader
+{
+	margin: 70px;
+	text-align:center;
+	font-size: 50px;	
+}
 body
 {
-background-color:linen;
+	background-color:linen;
+}
+
+#first_photo_main
+{
+	float:left;
 }
