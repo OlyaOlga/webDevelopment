@@ -11,7 +11,7 @@
 </head>
 
 <body>
-<script src="scripts.js"></script>
+<script type="application/javascript" src="scripts.js"></script>
 	<div>
 		<header>Cats</header>
 		<nav>
@@ -26,16 +26,17 @@
 		Some info and photo of my cat
 		</h1>
 		<p>
-			My cat's name is Thomas. He is one year old. He is very nice cat.
+			My cat's name is Thomas. He is one year old. He is very nice cat. 
+			Click on the photo you want to change.
 		</p>
 		<div id = "thomas_photos">
-			<img onclick = "rand_photo('tom1')" id = "tom1" class = "thomas" src = "tom_1.jpg" alt = "cat Thomas" />
-			<img onclick = "rand_photo('tom2')" id = "tom2" class = "thomas" src = "tom_2.jpg" alt = "cat Thomas" />
-			<img onclick = "rand_photo('tom3')" id = "tom3" class = "thomas" src = "tom_3.jpg" alt = "cat Thomas" />
-			<img onclick = "rand_photo('tom4')" id = "tom4" class = "thomas" src = "tom_4.jpg" alt = "cat Thomas" />
-			<img onclick = "rand_photo('tom5')" id = "tom5" class = "thomas" src = "tom_5.jpg" alt = "cat Thomas" />
-			<img onclick = "rand_photo('tom6')" id = "tom6" class = "thomas" src = "tom_6.jpg" alt = "cat Thomas" />
-			<img onclick = "rand_photo('tom7')" id = "tom7" class = "thomas" src = "tom_7.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo(this.id)" onmouseover = "change_size(this.id)" onmouseout = "return_orig_size(this.id)" id = "tom1" class = "thomas" src = "tom_1.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo(this.id)" onmouseover = "change_size(this.id)" onmouseout = "return_orig_size(this.id)" id = "tom2" class = "thomas" src = "tom_2.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo(this.id)" onmouseover = "change_size(this.id)" onmouseout = "return_orig_size(this.id)" id = "tom3" class = "thomas" src = "tom_3.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo(this.id)" onmouseover = "change_size(this.id)" onmouseout = "return_orig_size(this.id)" id = "tom4" class = "thomas" src = "tom_4.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo(this.id)" onmouseover = "change_size(this.id)" onmouseout = "return_orig_size(this.id)" id = "tom5" class = "thomas" src = "tom_5.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo(this.id)" onmouseover = "change_size(this.id)" onmouseout = "return_orig_size(this.id)" id = "tom6" class = "thomas" src = "tom_6.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo(this.id)" onmouseover = "change_size(this.id)" onmouseout = "return_orig_size(this.id)" id = "tom7" class = "thomas" src = "tom_7.jpg" alt = "cat Thomas" />
 		</div>
 		</article>
 		<footer>by Olya Olga</footer>
