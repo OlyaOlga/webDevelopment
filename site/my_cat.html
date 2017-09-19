@@ -28,20 +28,14 @@
 		<p>
 			My cat's name is Thomas. He is one year old. He is very nice cat.
 		</p>
-		<button onclick = "f()"> click me</button>
-		<div id = 'curr_img'> 
-			<img id = "current_image"/>
-			aaaaa
-		</div>
-		<div class = "thomas_photos">
-			<img src = "tom_1.jpg" alt = "cat Thomas" style = "width:386px; height:515px;  image-orientation: from-image;" />
-			<img src = "tom_2.jpg" alt = "cat Thomas" style = "width:386px; height:515px;  image-orientation: from-image; " />
-			<img src = "tom_3.jpg" alt = "cat Thomas" style = "width:386px; height:515px;  image-orientation: from-image;" />
-			<img src = "tom_4.jpg" alt = "cat Thomas" style = "width:386px; height:515px;  image-orientation: from-image;" />
-			<img src = "tom_5.jpg" alt = "cat Thomas" style = "width:386px; height:515px;  image-orientation: from-image;" />
-			<img src = "tom_6.jpg" alt = "cat Thomas" style = "width:386px; height:515px;  image-orientation: from-image;" />
-			<img src = "tom_7.jpg" alt = "cat Thomas" style = "width:386px; height:515px;  image-orientation: from-image;" />
-
+		<div id = "thomas_photos">
+			<img onclick = "rand_photo('tom1')" id = "tom1" class = "thomas" src = "tom_1.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo('tom2')" id = "tom2" class = "thomas" src = "tom_2.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo('tom3')" id = "tom3" class = "thomas" src = "tom_3.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo('tom4')" id = "tom4" class = "thomas" src = "tom_4.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo('tom5')" id = "tom5" class = "thomas" src = "tom_5.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo('tom6')" id = "tom6" class = "thomas" src = "tom_6.jpg" alt = "cat Thomas" />
+			<img onclick = "rand_photo('tom7')" id = "tom7" class = "thomas" src = "tom_7.jpg" alt = "cat Thomas" />
 		</div>
 		</article>
 		<footer>by Olya Olga</footer>

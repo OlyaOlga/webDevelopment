@@ -44,8 +44,18 @@ body
 {
 	background-color:linen;
 }
-div.thomas_photos {
-    display:none;
+
+.thomas
+{
+	width:386px;
+	height:515px;  
+	image-orientation: from-image;
+}
+	
+#thomas_photos 
+{
+    padding: 15px;
+    text-align: center;
 }
 
 #current_image
