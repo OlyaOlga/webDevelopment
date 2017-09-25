@@ -23,6 +23,8 @@ function return_orig_size(id)
 function start_game()
 {
 	var game_elems = document.getElementsByClassName("game");
+	document.getElementById("mouse").style.top="300px";
+	document.getElementById("mouse").style.left="300px";
 	for(var i=0; i<game_elems.length; ++i)
 	{
 		game_elems[i].style.display = "inline";

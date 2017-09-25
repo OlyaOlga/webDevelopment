@@ -94,6 +94,10 @@ body
 	display: none;
 }
 
+#stop_training
+{
+display:none;
+}
 
 footer
 {
