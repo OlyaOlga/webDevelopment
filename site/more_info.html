@@ -13,11 +13,12 @@
 </head>
 
 <body>
+<script type="application/javascript" src="scripts.js"></script>
 	<div>
 		<header>Cats</header>
 		<nav>
 			<ul class= "myMenu">
-				<li><a href = "main page.html">Home page</a></li>
+				<li><a href = "main_page.html">Home page</a></li>
 				<li><a href = "more_info.html">About cats</a></li>
 				<li><a href = "my_cat.html">My cat</a></li>
 			</ul>
@@ -26,6 +27,11 @@
 		<h1 class = "pageHeader">
 		Much more facts about cats
 		</h1>
+			<div id = "trap" class="game"> </div>
+			<img src = "mouse.png" id = "mouse" class="game" onmouseover = "mouse_running()"/>
+			<button id ="start_training" onclick = "start_game()"> Train to catch mouse!</button>
+			<button id = "stop_training" onclick="stop_current_training()">Stop training:)</button>
+			<img id="game_cat" class="game"src="hunting_cat.jpg"alt="hunting cat"/>
 		<p>
 		<img src = "cat_facts.jpg" alt="cats" style = "width: 810px; height:240px"/>
 		<img src = "sleeping_cat.jpg" alt="sleeping cat" style="width:500px; height:375px; float:right"/>
