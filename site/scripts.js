@@ -28,6 +28,7 @@ function start_game()
 		game_elems[i].style.display = "inline";
 	}
 	document.getElementById("stop_training").style.display = "inline";
+	document.getElementById("start_training").disabled = true;
 }
 
 function mouse_running()
@@ -42,9 +43,10 @@ function mouse_running()
 	document.getElementById("mouse").style.top = curr_y+"px";
 	document.getElementById("mouse").style.left = curr_x+"px";
 
-	if(curr_x<200&&curr_y<200)
+	if(curr_x<225&&curr_y<225)
 {
 	window.alert("you won!");
+	document.getElementById("start_training").disabled = false;
 }
 
 	
@@ -60,4 +62,5 @@ function stop_current_training()
 	document.getElementById("stop_training").style.display = "none";
 	document.getElementById("mouse").style.top="300px";
 	document.getElementById("mouse").style.left="300px";
+	document.getElementById("start_training").disabled = false;
 }
