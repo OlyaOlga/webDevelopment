@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/assets/index.css">
+</head>
+<body>
+	<div id = "header">
+		<a class = "menuItem" href = "/login">
+			<% if(!user) { %> Log in <% } else { %> Log out <% } %>
+		</a>
+		</a>
+		<a class = "menuItem" href = "/catalog">Catalog</a>
+		<a class = "menuItem" href = "/buy">Bucket</a>
+		<% if(admin) { %><a href = "/admin" class = "menuItem"><%= user %></a> <% } else 
+		{ %> <h1 class = "menuItem"><%= user %></h1> <% } %>
+		
+	</div>
+	<div id ="content">
+		<h1>Welcome to online shop</h1>
+	</div>
+	<div id = "header">
+	</div>
+
+</body>
+</html>
