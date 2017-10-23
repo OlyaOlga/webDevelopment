@@ -17,19 +17,20 @@
 	<a href="/catalog" class = "lnk">Catalog</a>
 	<a href="/buy" class = "lnk">My orders</a>
 </header>
-<div class="login">
-	<h1>
-		<%= message %>
-	</h1>
-	<h2>Log in</h2>
-	<form action="/login" method="post">
-		<h3>Enter your login</h3>
-		<input class = "inputField" name = "username"/>
-		<h3>Enter your password</h3>
-		<input class = "inputField" name = "password" type="password"/>
-		<button class = "button">ok</button>
+<div class="AdminInput">
+<p>Edit current item here<p/>
+<form action="/change" method="post">
+		<h3>Name</h3>
+		<input class = "AdminInput" name = "ChangedName" value="<%= rowResult.name %>"/>
+		<h3>Price</h3>
+		<input class = "AdminInput" name = "ChangedPrice" value="<%= rowResult.price %>"/>
+		<h3>Photo</h3>
+		<input class = "AdminInput" name = "ChangedPhoto" value="<%= rowResult.img %>"/>		
+		<h3>Description</h3>
+		<input class = "AdminInput" name = "ChangedDescription" style="height:200px" value="<%= rowResult.description %>"/>
+		<button class = "button">Apply changes</button>
 	</form>
-</div>
+<div/>
 <footer class = "Footer" style="bottom:0px">by Olya Olga</footer>
 </body>
 </html>

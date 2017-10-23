@@ -11,14 +11,32 @@
 
 <body>
 <header class = "myHeader">Books<br>
-	<h4><%= user %><a href="/login" class = "lnk">Log in</a><a href="/catalog" class = "lnk">Catalog</a><a href="" class = "lnk">Link</a><a href="" class = "lnk">Link</a>
+	<h4><%= user %>
+	<a href="/" class = "lnk">Main</a>
+	<a href="/login" class = "lnk">Log in</a>
+	<a href="/catalog" class = "lnk">Catalog</a>
+	<a href="/buy" class = "lnk">My orders</a>
 </header>
-<table>
+<div>
+<table class = "comicGreen">
+	<tr> 
+		 <th>Name </th> 
+		 <th>Price </th> 
+		 <th>Description </th>
+		 <th>Photo </th>
+	</tr>
 	<% for(var i = 0;i< catalog.length;++i){ %>
 		<tr> <td><%= catalog[i].name %></td>
+			 <td><%= catalog[i].price %> 
+				<br/>
+				<a href = <%= "/buy?id="+catalog[i].id %> class = "menuItem"><button class="button">Buy</button></a>
+			</td>
 			 <td><%= catalog[i].description %></td>
-			 <td><%= catalog[i].img %></td></tr>
+			 <td> <img src = <%= "/assets/"+catalog[i].img %> class = "picture"></td>
+			 </tr>
 	<% } %>
 </table>
+</div>
+<footer class = "Footer">by Olya Olga</footer>
 </body>
 </html>

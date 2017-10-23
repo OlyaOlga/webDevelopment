@@ -1,47 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="/assets/index.css">
+	<title>Online bookshop</title>
+	<link rel="stylesheet" type="text/css" href="/assets/index.css">
+		<meta charset="UTF-8">
+		<meta name="description" content="books">
+		<meta name="keywords" content="books, literature,buy">
+		<meta name="author" content="Olga Kravchuk">
 </head>
-<body>
-	<div id = "header">
-		<a class = "menuItem" href = "/login">
-			<% if(!user) { %> Log in <% } else { %> Log out <% } %>
-		</a>
-		</a>
-		<a class = "menuItem" href = "/catalog">Catalog</a>
-		<a class = "menuItem" href = "/buy">Bucket</a>
-		<% if(admin) { %><a href = "/admin" class = "menuItem"><%= user %></a> <% } else 
-		{ %> <h1 class = "menuItem"><%= user %></h1> <% } %>
-		
-	</div>
-	<div id ="content">
-		<table caption = "Ctalog" class="steelBlueCols">
-			<tr>
-				<th>Image</th>
-				<th>Name</th>
-				<th>Description</th>
-				<th>Price</th>
-			</tr>
-			
-			<% for(var i = 0;i<store.length;++i) { var m = "/assets/"+store[i].img; console.log(m); %>
-			<tr>
-				<td>
-					<img src = <%= "/assets/"+store[i].img %> class = "ico" >
-					<br/>
-					<% if(!total) { %><a href = <%= "/buy?id="+store[i].id+"&act=delete" %> class = "button">Delete</a><% } %>
-					
-				</td>
-				<td><%= store[i].name %></td>
-				<td><%= store[i].description %></td>
-				<td><%= store[i].price %></td>
-			</tr>
-			<% } %>
-		</table>
-		<% if(!total) { %><a href = "/buy?act=buy" class = "button">Buy all</a><% } %>
-	</div>
-	<div id = "header">
-	</div>
 
+<body>
+<header class = "myHeader">Books<br>
+	<h4><%= user %>
+	<a href="/" class = "lnk">Main</a>
+	<a href="/login" class = "lnk">Log in</a>
+	<a href="/catalog" class = "lnk">Catalog</a>
+	<a href="/buy" class = "lnk">My orders</a>
+</header>
+<p>Your orders:</p>
+<p style="float:right">Total sum: <%= totalSum%></p>
+<table class="comicGreen">
+	<tr> 
+		 <th>Name </th> 
+		 <th>Price </th> 
+		 <th>Description </th>
+		 <th>Photo </th>
+	</tr>
+	<% for(var i = 0;i< tovar.length;++i){ %>
+		<tr> <td><%= tovar[i].name %></td>
+			 <td><%= tovar[i].price %> 				
+			</td>
+			 <td><%= tovar[i].description %></td>
+			 <td> <img src = <%= "/assets/"+tovar[i].img %> class = "picture"></td>
+			 </tr>
+	<% } %>
+</table>
+<footer class = "Footer" style="bottom:0px">by Olya Olga</footer>
 </body>
 </html>

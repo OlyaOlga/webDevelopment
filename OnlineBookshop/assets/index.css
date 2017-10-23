@@ -1,6 +1,4 @@
 
-
-
 .button {
   display: inline-block;
   -webkit-box-sizing: content-box;
@@ -22,6 +20,7 @@
   -moz-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
   -o-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
   transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+  margin:5px;
 }
 .button:hover {
   text-decoration: underline;
@@ -73,7 +72,6 @@
 }
 
 
-
 .inputField:focus {
   width: 213px;
   cursor: default;
@@ -114,13 +112,7 @@ ul {
     overflow: auto;
 }
 .MenuItem {
-   /* color: #000;
-    padding: 8px 16px;
-    text-decoration: none;
-		margin-left:80px;
-	margin-right:80px;
-	display: inline-block; */
-	  display: inline-block;
+   display: inline-block;
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
@@ -189,4 +181,84 @@ ul {
   transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
   margin-left: 50px;
   margin-right:50px;
+}
+
+.Footer
+{
+	text-align:center;
+	background-color: #7da014;
+	position:fixed;
+	width: 100%;
+}
+
+table.comicGreen {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  border: 2px solid #4F7849;
+  background-color: #EEEEEE;
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+table.comicGreen td, table.comicGreen th {
+  border: 1px solid #4F7849;
+  padding: 3px 2px;
+}
+table.comicGreen tbody td {
+  font-size: 19px;
+  font-weight: bold;
+  color: #4F7849;
+}
+table.comicGreen tr:nth-child(even) {
+  background: #CEE0CC;
+}
+table.comicGreen tfoot {
+  font-size: 21px;
+  font-weight: bold;
+  color: #FFFFFF;
+  background: #4F7849;
+  background: -moz-linear-gradient(top, #7b9a76 0%, #60855b 66%, #4F7849 100%);
+  background: -webkit-linear-gradient(top, #7b9a76 0%, #60855b 66%, #4F7849 100%);
+  background: linear-gradient(to bottom, #7b9a76 0%, #60855b 66%, #4F7849 100%);
+  border-top: 1px solid #444444;
+}
+table.comicGreen tfoot td {
+  font-size: 21px;
+}
+
+
+input.AdminInput{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+
+input.AdminInput[type=submit]:hover {
+    background-color: #45a049;
+}
+
+div.AdminInput {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.Greetings
+{
+	font-size:100px;
+	text-align:center;
+}
+.picture
+{
+	width:100px;
+	height:200px;
+}
+.login
+{
+	margin-left: 50px;
 }
