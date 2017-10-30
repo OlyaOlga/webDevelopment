@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Online bookshop</title>
+	<link rel="stylesheet" type="text/css" href="/assets/index.css">
+		<meta charset="UTF-8">
+		<meta name="description" content="books">
+		<meta name="keywords" content="books, literature,buy">
+		<meta name="author" content="Olga Kravchuk">
+</head>
+
+<body>
+<header class = "myHeader">Books<br>
+	<h4><%= user %>
+	<a href="/" class = "lnk">Main</a>
+	<a href="/login" class = "lnk">Log in</a>
+	<a href="/catalog" class = "lnk">Catalog</a>
+	<a href="/buy" class = "lnk">My orders</a>
+</header>
+<p>Admin page</p>
+<table class="comicGreen">
+	<tr> 
+		<th>Oreder number</th>
+		 <th>Username </th> 
+		 <th>Book name </th> 
+		  <th>Price </th> 
+	</tr>
+	<% for(var i = 0;i< orders.length;++i){ %>
+		<tr> 
+			<td><%= orders[i].order_id %></td>
+			<td><%= orders[i].username %></td>
+			<td><%= orders[i].name %></td>
+			<td><%= orders[i].price %></td>
+	<% } %>
+</table>
+<footer class = "Footer" style="bottom:0px">by Olya Olga</footer>
+</body>
+</html>
