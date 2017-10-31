@@ -28,14 +28,14 @@
 	</tr>
 	<% for(var i = 0;i< tovar.length;++i){ %>
 		<tr> <td><%= tovar[i].name %></td>
-			 <td><%= tovar[i].price %> 				
+			<td><%= tovar[i].price %> 				
 			</td>
-			 <td><%= tovar[i].description %></td>
-			 <td> <img src = <%= "/assets/"+tovar[i].img %> class = "picture"></td>
-			  <td>  <a href = <%= "/buy?action=remove&id="+tovar[i].id %> class = "button">Remove</a>
-					<a href = <%= "/buy?action=change&id="+tovar[i].id %> class = "button">Change</a>
-					</td>
-			 </tr>
+			<td><%= tovar[i].description %></td>
+			<td> <img src = <%= "/assets/"+tovar[i].img %> class = "picture"></td>
+			<td>  <a href = <%= "/buy?action=remove&id="+tovar[i].id %> class = "button">Remove</a>
+				  <a href = <%= "/buy?action=change&id="+tovar[i].id %> class = "button">Change</a>
+			</td>
+			</tr>
 	<% } %>
 </table>
 <footer class = "Footer" style="bottom:0px">by Olya Olga</footer>

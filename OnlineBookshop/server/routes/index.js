@@ -206,8 +206,33 @@ app.get('/buy',function(req, res){
 	if(!req.session.admin)
 	{
 			console.log("ordinary user");
+			if(req.query.action == "remove" )
+				{
+					pg.connect(connectionString, (err, client, done) => 
+					{
+					if(err)
+					{
+					  done();
+					  console.log(err);
+					  return res.status(500).json({success: false, data: err});
+					}
+					const rows = [];
+					const query = client.query("delete from orders where order_id = " + req.query.book_id);
+					query.on('row', (row) => 
+					{
+					});
+					
+					query.on('end', () => 
+						{									
+							done();
+							console.log('111');
+							loadUserOrders(req,res)
+						});
+					});
+				}
 		if(req.query.id)
-		{
+		{				
+				
 				pg.connect(connectionString, (err, client, done) => 
 				{
 					if(err)
@@ -216,38 +241,27 @@ app.get('/buy',function(req, res){
 					  console.log(err);
 					  return res.status(500).json({success: false, data: err});
 					}
-					console.log('query start');
-					var q = "SELECT * FROM catalogue WHERE id = " + req.query.id;
-					console.log(q);
-					const query = client.query("SELECT * FROM catalogue WHERE id = " + req.query.id);
+					const rows = [];
+					const query = client.query("insert into orders (username, book_num) values  ('"+req.session.user+"', "+req.query.id+");");
 					query.on('row', (row) => 
 					{
-						req.session.store.push(row);
-						console.log(row);
 					});
 					
 					query.on('end', () => 
 					{									
 						done();
-						var sum=0;
-						for(var i=0; i<req.session.store.length;++i)
-						{
-							sum+=req.session.store[i].price;
-							console.log("total sum: "+sum+"  "+i+" length: "+ req.session.store.length);
-						}
-						res.render('buy',{user:req.session.user,tovar:req.session.store, totalSum:sum});
+						loadUserOrders(req,res)
 					});
 				});
+				
 		}
 		else
 		{
-			var sum=0;
-			for(var i=0; i<req.session.store.length;++i)
-					{
-						sum+=req.session.store[i].price;
-						console.log("total sum: "+sum+"  "+i+" length: "+ req.session.store.length);
-					}
-				res.render('buy',{user:req.session.user,tovar:req.session.store,totalSum:sum});
+			if(req.query.book_id)
+			{
+				console.log("REMOVED: "+ req.query.book_id);
+			}
+			loadUserOrders(req,res);
 		}
 	}	
 	else
@@ -315,6 +329,60 @@ function loadAdm(req,res)
 		});
 }
 
+
+function loadUserOrders(req,res)
+{
+	console.log("LOAD ORDERS PAGE");
+	pg.connect(connectionString, (err, client, done) => 
+				{
+					if(err)
+					{
+					  done();
+					  console.log(err);
+					  return res.status(500).json({success: false, data: err});
+					}
+					const rows = [];
+					const query = client.query("select order_id, name, description, img, price from catalogue, orders where id = book_num and username='"+req.session.user+"';");
+					query.on('row', (row) => 
+					{
+						rows.push(row);
+						req.session.store.push(row);
+						//console.log(row);
+					});
+					
+					var sumResult;
+					query.on('end', () => 
+					{									
+						done();
+						
+						pg.connect(connectionString, (err, client, done) => 
+						{	
+						console.log("STARTED SUM QUERY");
+						if(err)
+						{
+							done();
+							console.log(err);
+							return res.status(500).json({success: false, data: err});
+						}
+							
+						console.log("select sum(price) as total_sum from catalogue, orders where username='"+req.session.user+"' and book_num = id;");
+						const sumQuery = client.query("select sum(price) as total_sum from catalogue, orders where username='"+req.session.user+"' and book_num = id;")
+						sumQuery.on('row', (row) => 
+						{
+						sumResult=row.total_sum;
+						console.log("TOTAL SUM: "+row.total_sum);
+						});
+						sumQuery.on('end', () => 
+						{									
+							done();
+							res.render('buy',{user:req.session.user, tovar:rows, totalSum:sumResult});
+						});
+						});
+						
+						
+					});
+					});
+}
 
 
 module.exports = app;

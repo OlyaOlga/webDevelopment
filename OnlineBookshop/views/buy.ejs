@@ -21,17 +21,21 @@
 <p style="float:right">Total sum: <%= totalSum%></p>
 <table class="comicGreen">
 	<tr> 
+		<th> id</th>
 		 <th>Name </th> 
 		 <th>Price </th> 
 		 <th>Description </th>
 		 <th>Photo </th>
 	</tr>
 	<% for(var i = 0;i< tovar.length;++i){ %>
-		<tr> <td><%= tovar[i].name %></td>
+		<tr> 
+			<td><%= tovar[i].order_id %></td>
+			<td><%= tovar[i].name %></td>
 			 <td><%= tovar[i].price %> 				
 			</td>
 			 <td><%= tovar[i].description %></td>
 			 <td> <img src = <%= "/assets/"+tovar[i].img %> class = "picture"></td>
+			 <td><a href = <%= "/buy?action=remove&book_id="+tovar[i].order_id %> class = "button">Remove</a></td>
 			 </tr>
 	<% } %>
 </table>
