@@ -4,6 +4,7 @@ var session = session = require('express-session');
 const router = express.Router();
 const pg = require('pg');
 const path = require('path');
+const exec = require("child_process").exec
 var connectionString = "postgres://postgres:ll1745ll@127.0.0.1:5432/HeavyTasks";
 var pgClient = new pg.Client(connectionString);
 
@@ -22,8 +23,17 @@ app.get('/', function(req, res) //localhost:4000/
 });
 
 app.get('/filter', function(req, res) 
-{
+{		
 	res.render('filter',{user:req.session.user});
+});
+
+app.post('/loadImg', function(req, res) {
+	
+	exec('E:/Studying/web_studying/ImageFiltering/x64/Debug/ImageFiltering.exe assets/'+req.body.loadImgInput+ ' assets/filtered/result_'+req.body.loadImgInput,
+		function callback(error, stdout, stderr){
+			console.log("Hi")
+		});
+		res.render('filter',{user:req.session.user});
 });
 
 app.get('/test', function(req, res) 
@@ -32,6 +42,7 @@ app.get('/test', function(req, res)
 });
 
 app.get('/login', function(req,res){
+	
 	res.render('login', {message: "",registerMessage:"", user:req.session.user});
 });
 
