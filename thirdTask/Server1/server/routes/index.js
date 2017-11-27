@@ -6,6 +6,7 @@ const pg = require('pg');
 const path = require('path');
 const exec = require("child_process").exec
 var connectionString = "postgres://postgres:ll1745ll@127.0.0.1:5432/HeavyTasks";
+var randomstring = require("randomstring");
 var pgClient = new pg.Client(connectionString);
 
 app.use(session({
@@ -24,17 +25,48 @@ app.get('/', function(req, res) //localhost:4000/
 
 app.get('/filter', function(req, res) 
 {		
-	res.render('filter',{user:req.session.user});
+	if(!req.session.user)
+	{
+		res.render('error', {user:req.session.user, message: 'You are not logged in'});
+		return;
+	}
+	res.render('filter',{user:req.session.user, myImage:"background.jpg", myFilteredImage:"/assets/background.jpg"});
 });
 
 app.post('/loadImg', function(req, res) {
 	
-	exec('E:/Studying/web_studying/ImageFiltering/x64/Debug/ImageFiltering.exe assets/'+req.body.loadImgInput+ ' assets/filtered/result_'+req.body.loadImgInput,
-		function callback(error, stdout, stderr){
-			console.log("Hi")
+	var resultFileName = randomstring.generate()+req.body.loadImgInput;
+		pg.connect(connectionString, (err, client, done) => {
+		if(err) {
+		  done();
+		  console.log(err);
+		  return res.status(500).json({success: false, data: err});
+		}
+		
+		console.log('insert into tasks (server_id, username, img, img_res, curr_time) values(1, '+req.session.user+', '+req.body.loadImgInput+', '+resultFileName+',CURRENT_TIMESTAMP ) returning id;');
+		var rowId;
+		const query = client.query("insert into tasks (server_id, username, img, img_res, curr_time) values(1, '"+req.session.user+"', '"+req.body.loadImgInput+"', '"+resultFileName+"',CURRENT_TIMESTAMP ) returning id;");
+				query.on('row', (row) => {
+				rowId = row.id;
+				console.log(rowId);
+				});
+				query.on('end', () => {
+				  done();
+				
+				res.redirect(307, 'http://localhost:5000/?img='+req.body.loadImgInput+'&user='+req.session.user+'&filteredImg='+resultFileName);
+			});
+		
 		});
-		res.render('filter',{user:req.session.user});
 });
+
+app.post('/loadFilteredImg', function(req, res) {
+	console.log('redirected here');
+	console.log('user:'+req.query.user);
+	console.log('image:'+req.query.myImage);
+	console.log('filtered image:'+req.query.filteredImg);
+	res.render('filter', {user:req.query.user, myImage:req.query.myImage, myFilteredImage:req.query.filteredImg 
+});});
+		
 
 app.get('/test', function(req, res) 
 {
@@ -120,7 +152,6 @@ app.post('/register', function(req,res){
 				  }
 		
 			});
-		
 		
 		});
 });

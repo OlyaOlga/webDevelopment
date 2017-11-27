@@ -7,21 +7,28 @@
 
 <body>
 <header class = "myHeader">Image filters<br>
-	<h4><%= user %>
+	<h4><%= user %></h4>
 	<a href="/" class = "lnk">Main</a>
 	<a href="/login" class = "lnk">Log in</a>
 	<a href="/filter" class = "lnk">Filter image</a>
 
 </header>
-<p class >You will be able to filter your image here</p>
-
+<p>You can filter your image here</p>
 <div>
 <form action="/loadImg" method="post">
 		<h3>Load image</h3>
 		<input type = "file" name="loadImgInput"/>
-		<button> Ok</button>
+		<button> Filter</button>
 	</form>
 </div>
+	<div style = "float:left">
+	<p>loaded image</p>
+	<img  src = <%= "/assets/"+myImage %> class = "picture">
+	</div>
+	<div style = "float:right">
+	<p>filtered image</p>
+	<img  src = <%= "/assets"+myFilteredImage %> class = "picture">
+	</div>
 <footer class = "Footer" style="bottom:0px">by Olya Olga</footer>
 </body>
 </html>
