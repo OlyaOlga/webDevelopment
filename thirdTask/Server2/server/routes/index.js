@@ -19,16 +19,13 @@ app.set('view engine', 'ejs');
 
 app.post('/', function(req, res) //localhost:4000/      <-------
 {
+	var rowId = req.query.taskId;
+	console.log(rowId);
 	console.log('imgName: '+req.query.img);
 	exec('E:/Studying/web_studying/ImageFiltering/x64/Debug/ImageFiltering.exe '+req.query.img+ ' '+req.query.filteredImg, function callback(error, stdout, stderr){
 		var filtered = '/filtered/'+req.query.filteredImg;
 		
-	res.redirect(307,'http://localhost:4000/loadFilteredImg?user='+req.query.user+'&myImage='+req.query.img+'&filteredImg='+filtered)});
-		/*
-		function callback(error, stdout, stderr){
-			res.render('filter',{user:req.session.user, myImage:req.query.loadImgInput, myFilteredImage:'/assets/filtered/result_'+req.query.loadImgInput });
-		}
-		*/
+	res.redirect(307,'http://localhost:4000/loadFilteredImg?user='+req.query.user+'&myImage='+req.query.img+'&filteredImg='+filtered+'&taskId='+rowId)});
 });
 
 

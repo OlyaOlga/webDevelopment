@@ -33,6 +33,27 @@ app.get('/filter', function(req, res)
 	res.render('filter',{user:req.session.user, myImage:"background.jpg", myFilteredImage:"/assets/background.jpg"});
 });
 
+
+function updateTaskState(rowId)
+{
+	pg.connect(connectionString, (err, client, done) => {
+			if(err) {
+			  done();
+			  console.log(err);
+			  return res.status(500).json({success: false, data: err});
+			}
+			const query = client.query("update  tasks set task_state='done' where id="+rowId+";");
+			query.on('row', (row) => {
+				
+			});
+			query.on('end', () => {
+			  done();
+			  return;
+			});
+		});
+} 
+
+
 app.post('/loadImg', function(req, res) {
 	
 	var resultFileName = randomstring.generate()+req.body.loadImgInput;
@@ -43,20 +64,60 @@ app.post('/loadImg', function(req, res) {
 		  return res.status(500).json({success: false, data: err});
 		}
 		
-		console.log('insert into tasks (server_id, username, img, img_res, curr_time) values(1, '+req.session.user+', '+req.body.loadImgInput+', '+resultFileName+',CURRENT_TIMESTAMP ) returning id;');
-		var rowId;
-		const query = client.query("insert into tasks (server_id, username, img, img_res, curr_time) values(1, '"+req.session.user+"', '"+req.body.loadImgInput+"', '"+resultFileName+"',CURRENT_TIMESTAMP ) returning id;");
+		
+		var serverNum;
+		const query2 = client.query("select server_id, count(server_id) as quantity from tasks where task_state='doing' group by server_id order by quantity limit 1;");
+			query2.on('row', (row) => { 
+					serverNum=row.server_id;
+			});
+			query2.on('end', () => 
+			{	 
+				done();				
+			
+
+		
+		var limit = 5;
+			console.log("SERVER NUM:"+serverNum);
+		pg.connect(connectionString, (err, client, done) => 
+		{
+			if(err) {
+			  done();
+			  console.log(err);
+			  return res.status(500).json({success: false, data: err});
+			}
+			var queryResult;
+			const query1 = client.query("select count(q.task_state) as quantity from (select task_state from tasks where server_id="+serverNum +" and task_state='doing') as q;");
+			query1.on('row', (row) => {
+				queryResult = row.quantity;
+				console.log("QUERY RES: "+queryResult);				
+			});
+			query1.on('end', () => 
+			{
+			  done();
+			  if(queryResult<limit)
+			  {
+				console.log("SERVER CAN BE USED");
+				 var rowId;
+				const query = client.query("insert into tasks (server_id, username, img, img_res, curr_time, task_state) values("+serverNum+", '"+req.session.user+"', '"+req.body.loadImgInput+"', '"+resultFileName+"',CURRENT_TIMESTAMP, 'doing' ) returning id;");
 				query.on('row', (row) => {
 				rowId = row.id;
-				console.log(rowId);
+				console.log("ROW ID:"+rowId);
 				});
 				query.on('end', () => {
 				  done();
 				
-				res.redirect(307, 'http://localhost:5000/?img='+req.body.loadImgInput+'&user='+req.session.user+'&filteredImg='+resultFileName);
+				res.redirect(307, 'http://localhost:5000/?img='+req.body.loadImgInput+'&user='+req.session.user+'&filteredImg='+resultFileName+'&taskId='+rowId);
 			});
-		
-		});
+			  }
+			  else
+			  {
+				    res.render('error', {user:req.session.user, message: 'Now servers are busy. Pleasle, try later'});
+			  }  
+			});
+		});	
+			});		
+});
+ 
 });
 
 app.post('/loadFilteredImg', function(req, res) {
@@ -64,14 +125,11 @@ app.post('/loadFilteredImg', function(req, res) {
 	console.log('user:'+req.query.user);
 	console.log('image:'+req.query.myImage);
 	console.log('filtered image:'+req.query.filteredImg);
-	res.render('filter', {user:req.query.user, myImage:req.query.myImage, myFilteredImage:req.query.filteredImg 
-});});
+	var rowId = req.query.taskId;
+	updateTaskState(rowId);
+	res.render('filter', {user:req.query.user, myImage:req.query.myImage, myFilteredImage:req.query.filteredImg});});
 		
 
-app.get('/test', function(req, res) 
-{
-	res.redirect(307, 'http://localhost:5000/');
-});
 
 app.get('/login', function(req,res){
 	
