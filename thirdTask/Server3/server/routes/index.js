@@ -17,17 +17,15 @@ app.use(session({
 
 app.set('view engine', 'ejs');
 
-app.post('/', function(req, res) //localhost:4000/      <-------
+app.post('/', function(req, res)
 {
 	var rowId = req.query.taskId;
 	console.log(rowId);
 	console.log('imgName: '+req.query.img);
-	var filtered = '/filtered/'+req.query.filteredImg;
-	exec('E:/Studying/web_studying/ImageFiltering/x64/Debug/ImageFiltering.exe '+req.query.img+ ' '+req.query.filteredImg,
-	function callback(error, stdout, stderr){
-		console.log("redirecting");
-		res.redirect(307,'http://localhost:4000/loadFilteredImg?user='+req.query.user+'&myImage='+req.query.img+'&filteredImg='+filtered+'&taskId='+rowId);
-	});
+	exec('E:/Studying/web_studying/ImageFiltering/x64/Debug/ImageFiltering.exe '+req.query.img+ ' '+req.query.filteredImg, function callback(error, stdout, stderr){
+		var filtered = '/filtered/'+req.query.filteredImg;
+		
+	res.redirect(307,'http://localhost:4000/loadFilteredImg?user='+req.query.user+'&myImage='+req.query.img+'&filteredImg='+filtered+'&taskId='+rowId)});
 });
 
 

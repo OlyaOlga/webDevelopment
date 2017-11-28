@@ -72,25 +72,23 @@ app.post('/loadImg', function(req, res) {
 			});
 			query2.on('end', () => 
 			{	 
-				done();				
-			
-
-		
-		var limit = 5;
-			console.log("SERVER NUM:"+serverNum);
-		pg.connect(connectionString, (err, client, done) => 
-		{
-			if(err) {
-			  done();
-			  console.log(err);
-			  return res.status(500).json({success: false, data: err});
-			}
-			var queryResult;
-			const query1 = client.query("select count(q.task_state) as quantity from (select task_state from tasks where server_id="+serverNum +" and task_state='doing') as q;");
-			query1.on('row', (row) => {
+				done();						
+				var limit = 5;
+				console.log("SERVER NUM:"+serverNum);
+				pg.connect(connectionString, (err, client, done) => 
+				{
+					if(err) {
+					done();
+					console.log(err);
+					return res.status(500).json({success: false, data: err});
+				}
+				var queryResult;
+				const query1 = client.query("select count(q.task_state) as quantity from (select task_state from tasks where server_id="+serverNum +" and task_state='doing') as q;");
+				query1.on('row', (row) =>
+				{
 				queryResult = row.quantity;
 				console.log("QUERY RES: "+queryResult);				
-			});
+				});
 			query1.on('end', () => 
 			{
 			  done();
@@ -105,8 +103,16 @@ app.post('/loadImg', function(req, res) {
 				});
 				query.on('end', () => {
 				  done();
-				
-				res.redirect(307, 'http://localhost:5000/?img='+req.body.loadImgInput+'&user='+req.session.user+'&filteredImg='+resultFileName+'&taskId='+rowId);
+				if(serverNum==1)
+				{
+					console.log("REDIRECTED TO FIRST SERVER");
+					res.redirect(307, 'http://localhost:5000/?img='+req.body.loadImgInput+'&user='+req.session.user+'&filteredImg='+resultFileName+'&taskId='+rowId);
+				}
+				else
+				{
+					console.log("REDIRECTED TO SECOND SERVER");
+					res.redirect(307, 'http://localhost:8088/?img='+req.body.loadImgInput+'&user='+req.session.user+'&filteredImg='+resultFileName+'&taskId='+rowId);
+				}
 			});
 			  }
 			  else
@@ -121,13 +127,28 @@ app.post('/loadImg', function(req, res) {
 });
 
 app.post('/loadFilteredImg', function(req, res) {
-	console.log('redirected here');
-	console.log('user:'+req.query.user);
-	console.log('image:'+req.query.myImage);
-	console.log('filtered image:'+req.query.filteredImg);
+pg.connect(connectionString, (err, client, done) => {
+	var username;
 	var rowId = req.query.taskId;
-	updateTaskState(rowId);
-	res.render('filter', {user:req.query.user, myImage:req.query.myImage, myFilteredImage:req.query.filteredImg});});
+		pg.connect(connectionString, (err, client, done) => {
+		if(err) {
+		  done();
+		  console.log(err);
+		  return res.status(500).json({success: false, data: err});
+		}
+		const query = client.query('select username from tasks where id= ($1)', [rowId]);
+		query.on('row', (row) => {
+			username = row.username;
+		});
+		query.on('end', () => {
+		 done();
+		req.session.user = username;		
+		updateTaskState(rowId);
+		res.render('filter', {user:req.query.user, myImage:req.query.myImage, myFilteredImage:req.query.filteredImg});});
+		});
+	});
+	
+	});
 		
 
 
@@ -205,7 +226,8 @@ app.post('/register', function(req,res){
 				  res.render('main', {user:req.session.user});
 				});
 				  }
-				  else{
+				  else
+				  {
 					  res.render('main', {user:req.session.user});
 				  }
 		
