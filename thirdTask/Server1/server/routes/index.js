@@ -30,7 +30,37 @@ app.get('/filter', function(req, res)
 		res.render('error', {user:req.session.user, message: 'You are not logged in'});
 		return;
 	}
-	res.render('filter',{user:req.session.user, myImage:"background.jpg", myFilteredImage:"/assets/background.jpg"});
+	if(req.session.admin==true)
+	{
+		res.send("admin is here");
+	}
+	else
+	{	
+		var queryQuantity=0;
+		pg.connect(connectionString, (err, client, done) => {
+			if(err) {
+			  done();
+			  console.log(err);
+			  return res.status(500).json({success: false, data: err});
+			}
+			const query = client.query("select count (todayUsersFilters) q from(select * from tasks where curr_time > CURRENT_DATE and username='"+req.session.user+"') as todayUsersFilters;");
+			query.on('row', (row) => {
+				queryQuantity = row.q;
+				console.log("/loadFilteredImg  QUANTITY OF QUERIES: "+queryQuantity );
+			});
+			query.on('end', () => {
+			  done();
+			  if(queryQuantity>5)
+			  {
+			  res.render('error', {user:req.session.user, message: 'Quantity of tasks for today for you is over'});}
+		  else{
+			  res.render('filter',{user:req.session.user, myImage:"background.jpg", myFilteredImage:"/filtered/background.jpg"});
+		  }
+			});
+		});
+		//res.render('filter',{user:req.session.user, myImage:"background.jpg", myFilteredImage:"/filtered/background.jpg"});
+		
+	}
 });
 
 
@@ -56,7 +86,27 @@ function updateTaskState(rowId)
 
 app.post('/loadImg', function(req, res) {
 	
-	var resultFileName = randomstring.generate()+req.body.loadImgInput;
+	
+	var queryQuantity=0;
+		pg.connect(connectionString, (err, client, done) => {
+			if(err) {
+			  done();
+			  console.log(err);
+			  return res.status(500).json({success: false, data: err});
+			}
+			const query = client.query("select count (todayUsersFilters) q from(select * from tasks where curr_time > CURRENT_DATE and username='"+req.session.user+"') as todayUsersFilters;");
+			query.on('row', (row) => {
+				queryQuantity = row.q;
+				console.log("/loadFilteredImg  QUANTITY OF QUERIES: "+queryQuantity );
+			});
+			query.on('end', () => {
+			  done();
+			  if(queryQuantity>5)
+			  {
+			  res.render('error', {user:req.session.user, message: 'Quantity of tasks for today for you is over'});}
+		  else{
+			  ////////
+			  var resultFileName = randomstring.generate()+req.body.loadImgInput;
 		pg.connect(connectionString, (err, client, done) => {
 		if(err) {
 		  done();
@@ -83,13 +133,13 @@ app.post('/loadImg', function(req, res) {
 					return res.status(500).json({success: false, data: err});
 				}
 				var queryResult;
-				const query1 = client.query("select count(q.task_state) as quantity from (select task_state from tasks where server_id="+serverNum +" and task_state='doing') as q;");
-				query1.on('row', (row) =>
+				const query11 = client.query("select count(q.task_state) as quantity from (select task_state from tasks where server_id="+serverNum +" and task_state='doing') as q;");
+				query11.on('row', (row) =>
 				{
 				queryResult = row.quantity;
 				console.log("QUERY RES: "+queryResult);				
 				});
-			query1.on('end', () => 
+			query11.on('end', () => 
 			{
 			  done();
 			  if(queryResult<limit)
@@ -124,10 +174,20 @@ app.post('/loadImg', function(req, res) {
 			});		
 });
  
+
+	////////
+			 // res.render('filter',{user:req.session.user, myImage:"background.jpg", myFilteredImage:"/filtered/background.jpg"});
+		  }
+			});
+		});	
+	
 });
 
 app.post('/loadFilteredImg', function(req, res) {
-pg.connect(connectionString, (err, client, done) => {
+	
+		
+			  ////////
+	pg.connect(connectionString, (err, client, done) => {	
 	var username;
 	var rowId = req.query.taskId;
 		pg.connect(connectionString, (err, client, done) => {
@@ -136,21 +196,23 @@ pg.connect(connectionString, (err, client, done) => {
 		  console.log(err);
 		  return res.status(500).json({success: false, data: err});
 		}
-		const query = client.query('select username from tasks where id= ($1)', [rowId]);
-		query.on('row', (row) => {
+		const query1 = client.query('select username from tasks where id= ($1)', [rowId]);
+		query1.on('row', (row) => {
 			username = row.username;
 		});
-		query.on('end', () => {
+		query1.on('end', () => {
 		 done();
 		req.session.user = username;		
 		updateTaskState(rowId);
 		res.render('filter', {user:req.query.user, myImage:req.query.myImage, myFilteredImage:req.query.filteredImg});});
 		});
 	});
+	////////
+			 // res.render('filter',{user:req.session.user, myImage:"background.jpg", myFilteredImage:"/filtered/background.jpg"});
+	
+
 	
 	});
-		
-
 
 app.get('/login', function(req,res){
 	
@@ -236,4 +298,67 @@ app.post('/register', function(req,res){
 		});
 });
 
+app.get('/myFilteredImages', function(req,res){
+	if(!req.session.user)
+	{
+		res.render('error', {user:req.session.user, message: 'You are not logged in'});
+		return;
+	}
+	const rows = [];
+	if(req.session.admin==true)
+	{		
+		var queryQuantity=0;
+		pg.connect(connectionString, (err, client, done) => {
+			if(err) {
+			  done();
+			  console.log(err);
+			  return res.status(500).json({success: false, data: err});
+			}
+			const query = client.query("select count (todayUsersFilters) q from(select * from tasks where curr_time > CURRENT_DATE and username='"+req.session.user+"') as todayUsersFilters;");
+			query.on('row', (row) => {
+				queryQuantity = row.q;
+			});
+			query.on('end', () => {
+			  done();
+			  if(queryQuantity>5)
+			  res.render('error', {user:req.session.user, message: 'Quantity of tasks for today for you is over'});
+		  else{
+			  pg.connect(connectionString, (err, client, done) => {
+			if(err) {
+			  done();
+			  console.log(err);
+			  return res.status(500).json({success: false, data: err});
+			}
+			const query = client.query("select * from tasks where task_state='doing' order by curr_time desc;");
+			query.on('row', (row) => {
+				rows.push(row);
+			});
+			query.on('end', () => {
+			  done();
+			  res.render('adminsPage', {user:req.session.user, tasks:rows});
+			});
+		})
+		  }
+			});
+		});
+	}
+	else
+	{
+	pg.connect(connectionString, (err, client, done) => {
+			if(err) {
+			  done();
+			  console.log(err);
+			  return res.status(500).json({success: false, data: err});
+			}
+			const query = client.query("select * from tasks where username='" +req.session.user+"' order by curr_time desc;");
+			query.on('row', (row) => {
+				rows.push(row);
+			});
+			query.on('end', () => {
+			  done();
+			  res.render('usersPage', {user:req.session.user, tasks:rows});
+			});
+		});
+	}
+});
 module.exports = app;

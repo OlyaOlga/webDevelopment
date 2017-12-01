@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Image filtering</title>
+	<link rel="stylesheet" type="text/css" href="/assets/index.css">
+</head>
+
+<body>
+<header class = "myHeader">Image filters<br>
+	<h4><%= user %></h4>
+	<a href="/" class = "lnk">Main</a>
+	<a href="/login" class = "lnk">Log in</a>
+	<a href="/filter" class = "lnk">Filter image</a>
+	<a href="/myFilteredImages" class = "lnk">History</a>
+
+</header>
+<div>
+<table class = "comicGreen">
+	<tr> 
+		 <th> Unfiltered image </th> 
+		 <th> Filtered image </th> 
+		 <th>Date </th>
+	</tr>
+	<% for(var i = 0;i< tasks.length;++i){ %>
+		<tr> <td> <img src=" <%= "/assets/" + tasks[i].img %>" class = "picture"/></td>
+			 <td>
+			 <% if(tasks[i].task_state=='done')
+			 { %>
+				<img src="<%="/assets/filtered/" + tasks[i].img_res%>" class = "picture"/>
+				<% } else{ %>  
+				<p>Currently, your image is processing, wait please</p>
+			<% } %>
+			</td>
+			 <td><%= tasks[i].curr_time%></td>
+			 </tr>
+	<% } %>
+</table>
+</div>
+<footer class = "Footer" style="bottom:0px">by Olya Olga</footer>
+</body>
+</html>

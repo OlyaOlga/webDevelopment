@@ -11,10 +11,23 @@
 	<a href="/" class = "lnk">Main</a>
 	<a href="/login" class = "lnk">Log in</a>
 	<a href="/filter" class = "lnk">Filter image</a>
-	<a href="/myFilteredImages" class = "lnk">History</a>
-
 </header>
-<p class = "Greetings">Welcome to our site</p>
+<div>
+<table class = "comicGreen">
+	<tr> 
+		<th> Task Id</th> 
+		 <th> Username</th> 
+		 <th> ServerId </th> 
+	</tr>
+	<% for(var i = 0;i< tasks.length;++i){ %>
+		<tr>
+		<td> <%=tasks[i].id%></td>			 
+		<td> <%=tasks[i].username %></td>	
+		<td> <%=tasks[i].server_id%></td>				
+		</tr>
+	<% } %>
+</table>
+</div>
 <footer class = "Footer" style="bottom:0px">by Olya Olga</footer>
 </body>
 </html>
